@@ -1,0 +1,44 @@
+def read_names_from_file(filename):
+    """Membaca nama dari file dan mengembalikannya dalam list."""
+    with open(filename, 'r') as file:
+        names = [line.strip() for line in file.readlines()]
+    return names
+
+def binary_search(names, target, low, high):
+    """Melakukan pencarian biner secara rekursif."""
+    if low > high:
+        return -1  # Nama tidak ditemukan
+
+    mid = (low + high) // 2
+    if names[mid] == target:
+        return mid  # Nama ditemukan
+    elif names[mid] < target:
+        return binary_search(names, target, mid + 1, high)
+    else:
+        return binary_search(names, target, low, mid - 1)
+
+def main():
+    # Membaca nama dari file
+    filename = 'names.txt'
+    names = read_names_from_file(filename)
+    
+    # Mengurutkan nama untuk pencarian biner
+    names.sort()
+    
+    # Meminta input dari pengguna
+    target_name = input("Masukkan nama yang ingin dicari: ")
+    
+    # Melakukan pencarian
+    index = binary_search(names, target_name, 0, len(names) - 1)
+    
+    # Menyimpan hasil pencarian ke file
+    with open('search_results.txt', 'w') as result_file:
+        if index != -1:
+            result_file.write(f'Nama "{target_name}" ditemukan di indeks {index}.\n')
+            print(f'Nama "{target_name}" ditemukan di indeks {index}.')
+        else:
+            result_file.write(f'Nama "{target_name}" tidak ditemukan.\n')
+            print(f'Nama "{target_name}" tidak ditemukan.')
+
+if _name_ == "_main_":
+    main()
